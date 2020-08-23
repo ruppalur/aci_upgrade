@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %} ACI {% endblock %}
+
+{% block content  %}
+
+<h1>Fabric Selected</h1>
+
+<p>Location : {{ cred[0] }}</p>
+<p>fabric : {{ cred[1] }}</p>
+<p>controller  : {{ cred[2] }}</p>
+<p>username  : {{ cred[3] }}</p>
+<p>Login Status Code  : {{ cred[4] }}</p>
+<p>Login Token  : {{ cred[5] }}</p>
+<p>Login Header  : {{ cred[6] }}</p>
+<p>Login Cookie : {{ cred[7] }}</p>
+<p>Root Node  : {{ cred[8] }}</p>
+<p>Logout Status Code  : {{ cred[9] }}</p>
+ {% endblock %}

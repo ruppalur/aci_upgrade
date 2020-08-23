@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %} ACI {% endblock %}
+
+{% block content  %}
+
+<h1>This is the test page</h1>
+
+<form class="" method="post">
+    {{ form.csrf_token }}
+    {{ form.location }}
+    {{ form.fabric }}
+    {{ form.submit }}
+
+</form>
+
+ {% endblock %}
