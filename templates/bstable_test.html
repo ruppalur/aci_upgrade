@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Hello, Bootstrap Table!</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.css">
+    <link href="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.css" rel="stylesheet">
+
+
+  </head>
+  <body>
+    <style>
+          #toolbar {
+            margin: 0;
+          }
+    </style>
+
+    <div class="container-fluid mt-3">
+      <h2>Fabric Summary</h2>
+      <br>
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link active" data-toggle="tab" href="#Summary">Summary</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#PodInformation">Pod info</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#Endpoint">Endpoint Info</a>
+        </li>
+      </ul>
+
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div id="Summary" class="container-fluid tab-pane active"><br>
+          <h3>Fabric Summary</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        </div>
+        <div id="PodInformation" class="container-fluid tab-pane fade"><br>
+          <h3>Pod Information</h3>
+          <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        </div>
+        <div id="Endpoint" class="container-fluid tab-pane fade"><br>
+
+                      <div id="toolbar" class="select">
+                        <select class="form-control">
+                          <option value="">Export Basic</option>
+                          <option value="all">Export All</option>
+                          <option value="selected">Export Selected</option>
+                        </select>
+                      </div>
+            <div class="container-fluid">
+                <table id="table"
+                      data-show-export="true"
+                      data-pagination="true"
+                      data-side-pagination="server"
+                      data-click-to-select="true"
+                      data-toolbar="#toolbar"
+                      data-show-toggle="true"
+                      data-show-columns="true">
+
+                                  <tr>
+                                      <td>cep-FA:16:3E:BE:CE:BC</td>
+                                      <td>0.0.0.0</td>
+                                      <td>FA:16:3E:BE:CE:BC</td>
+                                      <td>tn-prj_946ea0d0ffee494b9293cd75265baf81</td>
+                                      <td>epg-net_cf033758-8b16-4264-bad9-97d80528f8eb</td>
+                                      <td>No DNS entry</td>
+                                      <td>vxlan-7471108</td>
+                                      <td>False</td>
+                                  </tr>
+
+                                  <tr>
+                                      <td>cep-FA:16:3E:7B:6D:9D</td>
+                                      <td>0.0.0.0</td>
+                                      <td>FA:16:3E:7B:6D:9D</td>
+                                      <td>tn-prj_946ea0d0ffee494b9293cd75265baf81</td>
+                                      <td>epg-net_cf033758-8b16-4264-bad9-97d80528f8eb</td>
+                                      <td>No DNS entry</td>
+                                      <td>vxlan-7471108</td>
+                                      <td>False</td>
+                                  </tr>
+
+                                  <tr>
+                                      <td>cep-FA:16:3E:FD:A3:49</td>
+                                      <td>0.0.0.0</td>
+                                      <td>FA:16:3E:FD:A3:49</td>
+                                      <td>tn-prj_d0356052039c4124a93a138ab86bc1b6</td>
+                                      <td>epg-net_1da9de80-47f2-4904-ac5e-b06a62d31f5d</td>
+                                      <td>No DNS entry</td>
+                                      <td>vxlan-8257556</td>
+                                      <td>False</td>
+                                  </tr>
+
+                                  <tr>
+                                      <td>cep-FA:16:3E:01:68:BF</td>
+                                      <td>0.0.0.0</td>
+                                      <td>FA:16:3E:01:68:BF</td>
+                                      <td>tn-prj_d0356052039c4124a93a138ab86bc1b6</td>
+                                      <td>epg-net_1da9de80-47f2-4904-ac5e-b06a62d31f5d</td>
+                                      <td>No DNS entry</td>
+                                      <td>vxlan-8257556</td>
+                                      <td>False</td>
+                                  </tr>
+
+                </table>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.17.1/dist/extensions/multiple-sort/bootstrap-table-multiple-sort.js"></script>
+    <script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
+    <script src="https://unpkg.com/tableexport.jquery.plugin/libs/jsPDF/jspdf.min.js"></script>
+    <script src="https://unpkg.com/tableexport.jquery.plugin/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.17.1/dist/extensions/export/bootstrap-table-export.min.js"></script>
+    <script>
+      var $table = $('#table')
+
+      $(function() {
+        $('#toolbar').find('select').change(function () {
+          $table.bootstrapTable('destroy').bootstrapTable({
+            exportDataType: $(this).val(),
+            exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
+            columns: [
+              {
+                field: 'endpoint',
+                title: 'Endpoint'
+              }, {
+                field: 'ipadd',
+                title: 'IP address'
+              }, {
+                field: 'macadd',
+                title: 'MAC address'
+              }, {
+                field: 'tenant',
+                title: 'Tenant'
+              }, {
+                field: 'epg',
+                title: 'EPG/VRF/L3out'
+              }, {
+                field: 'hostname',
+                title: 'Hostname'
+              }, {
+                field: 'encapvlan',
+                title: 'Encap Vlan'
+              }, {
+                field: 'routable',
+                title: 'Routable IP'
+              }
+            ]
+          })
+        }).trigger('change')
+      })
+    </script>
+  </body>
+</html>

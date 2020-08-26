@@ -4,16 +4,67 @@
 
 {% block content  %}
 
-<h1>Fabric Selected</h1>
+<h1>Fabric Information</h1>
 
-<p>Location : {{ cred[0] }}</p>
-<p>fabric : {{ cred[1] }}</p>
-<p>controller  : {{ cred[2] }}</p>
-<p>username  : {{ cred[3] }}</p>
-<p>Login Status Code  : {{ cred[4] }}</p>
-<p>Login Token  : {{ cred[5] }}</p>
-<p>Login Header  : {{ cred[6] }}</p>
-<p>Login Cookie : {{ cred[7] }}</p>
-<p>Root Node  : {{ cred[8] }}</p>
-<p>Logout Status Code  : {{ cred[9] }}</p>
- {% endblock %}
+<p>Location : {{ location }}</p>
+<p>fabric : {{ fabric }}</p>
+<p>controller  : {{ controller }}</p>
+<p>Leafs : {{ leafs }}</p>
+<p>username  : {{ username }}</p>
+<p>Login Status Code  : {{ login_status_code }}</p>
+<p>Root Node  : {{ root_node }}</p>
+<p>Total Endpoints: {{ ep_total }}</p>
+<p>Total Valid IP address: {{ ip_addresses|length }}</p>
+<p>Total Ip Information: </p>
+<input class="form-control" id="searchInput" type="text" placeholder="Search for Endpoint..">
+<br>
+<table id="endpointtable" class="display table table-striped table-condensed" width=100% >
+        <thead>
+            <tr>
+                <th colspan="12">Endpoint Information</th>
+                <tr>
+                    <td>Endpoint</td>
+                    <td>IP address</td>
+                    <td>MAC address</td>
+                    <td>Tenant</td>
+                    <td>EPG/VRF/L3out</td>
+                    <td>Hostname</td>
+                    <td>Encap Vlan</td>
+                    <td>Routable IP</td>
+                </tr>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ep  in ep_info %}
+            <tr>
+                <td>{{ ep[2] }}</td>
+                <td>{{ ep[3] }}</td>
+                <td>{{ ep[4] }}</td>
+                <td>{{ ep[0] }}</td>
+                <td>{{ ep[1] }}</td>
+                <td>{{ ep[7] }}</td>
+                <td>{{ ep[5] }}</td>
+                <td>{{ ep[6] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+</table>
+<p>Logout Status Code  : {{ logout_status_code }}</p>
+{% endblock %}
+
+
+{% block script  %}
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script>
+        $(document).ready(function(){
+          $("#searchInput").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#endpointtable tr").filter(function() {
+              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+          });
+        });
+    </script>
+{% endblock %}
