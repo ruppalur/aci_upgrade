@@ -36,6 +36,22 @@ for int in range(54):
 source: https://www.cisco.com/c/en/us/td/docs/switches/datacenter/aci/apic/sw/2-x/rest_cfg/2_1_x/b_Cisco_APIC_REST_API_Configuration_Guide/b_Cisco_APIC_REST_API_Configuration_Guide_chapter_01.html
 source: https://github.com/unofficialaciguide/aci-python
 !
+    '''
+    for node_id,model in crazy_output['leaf_nodes_info']:
+        print(f"Gathering information for {node_id} {model} - ",end = "")
+        #physcial interface information of node
+        node_capture_start = time.perf_counter()
+        node_physical_output = _instance.get_physical_interfaces(node_id)
+        #print(node_physical_output)
+        phy_node_output = format_leaf_interface_output(node_physical_output)
+        #print("...done - ",end = "")
+        #Get the fabric firmware information
+        #print(f"Opflex information",end = "")
+        opflex_node_output = _instance.get_opflex_information(node_id)
+        crazy_output['phys_info'].append([node_id,phy_node_output,opflex_node_output])
+        node_capture_stop = time.perf_counter()
+        print(f' in {round(node_capture_stop - node_capture_start, 2)} sec(s)')
+   '''
 __author__ = ruppalur
 """
 
@@ -311,22 +327,7 @@ def final_construct(location, fabric):
             phy_node_output = format_leaf_interface_output(phy_result[1])
             crazy_output['phys_info'].append([phy_node_output])
             #print(phy_result)
-    '''
-    for node_id,model in crazy_output['leaf_nodes_info']:
-        print(f"Gathering information for {node_id} {model} - ",end = "")
-        #physcial interface information of node
-        node_capture_start = time.perf_counter()
-        node_physical_output = _instance.get_physical_interfaces(node_id)
-        #print(node_physical_output)
-        phy_node_output = format_leaf_interface_output(node_physical_output)
-        #print("...done - ",end = "")
-        #Get the fabric firmware information
-        #print(f"Opflex information",end = "")
-        opflex_node_output = _instance.get_opflex_information(node_id)
-        crazy_output['phys_info'].append([node_id,phy_node_output,opflex_node_output])
-        node_capture_stop = time.perf_counter()
-        print(f' in {round(node_capture_stop - node_capture_start, 2)} sec(s)')
-   '''
+
     #get Endpoint information
     print('-'*60)
     print('Gathering the endpoint information of fabric',end = " ")
