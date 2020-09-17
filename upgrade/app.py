@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, jsonify
 from flask_wtf import FlaskForm
 from wtforms import SelectField, SubmitField, SelectMultipleField
-from apic_info import give_credentials
+from base_resources import final_construct
 from apic_data import fabricChoices, leaf_choices, locationChoices
 
 
@@ -12,7 +12,7 @@ app.config['SECRET_KEY'] = "akdsfjq340jf9q34ifk43fq439f"
 class ACI_inputForm(FlaskForm):
     location = SelectField('Select the Location', choices=locationChoices)
     fabric = SelectField('Select the Fabric', choices=fabricChoices)
-    leafs = SelectMultipleField(choices=leaf_choices, default=['1011', '1021'])
+    #leafs = SelectMultipleField(choices=leaf_choices, default=['1011', '1021'])
     submit = SubmitField("Fetch")
 
 
@@ -22,8 +22,9 @@ def index():
     if request.method == 'POST' and form.validate():
         location = form.location.data
         fabric = form.fabric.data
-        leafs = form.leafs.data
-        cred = give_credentials(location, fabric, leafs)
+        #leafs = form.leafs.data
+        #cred = give_credentials(location, fabric, leafs)
+        cred = final_construct(location, fabric)
         return render_template('dataout.html', **cred)
     return render_template('index.html', form=form)
 
