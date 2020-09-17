@@ -311,7 +311,7 @@ def final_construct(location, fabric):
             phy_node_output = format_leaf_interface_output(phy_result[1])
             crazy_output['phys_info'].append([phy_node_output])
             #print(phy_result)
-        '''
+    '''
     for node_id,model in crazy_output['leaf_nodes_info']:
         print(f"Gathering information for {node_id} {model} - ",end = "")
         #physcial interface information of node
@@ -328,6 +328,7 @@ def final_construct(location, fabric):
         print(f' in {round(node_capture_stop - node_capture_start, 2)} sec(s)')
    '''
     #get Endpoint information
+    print('-'*60)
     print('Gathering the endpoint information of fabric',end = " ")
     get_endpoint_start = time.perf_counter()
     endpoint_output = _instance.get_endpoint_info()
@@ -335,6 +336,7 @@ def final_construct(location, fabric):
     crazy_output['endpoint_total'] = endpoint_output['totalCount']
     get_endpoint_stop = time.perf_counter()
     print(f'...done in {round(get_endpoint_stop - get_endpoint_start, 2)} sec(s)')
+
 
     #Trigger the logout function
     print('Gathered all the information of fabric..logging off',end = " ")
@@ -351,5 +353,5 @@ if __name__ == '__main__':
     my_location = 'SVL'
     my_fabric = 'SVL-FAB7'
     final_construct_output = final_construct(my_location, my_fabric)
-    print(final_construct_output['totalTime'])
+    print(final_construct_output['fabric_node_info'])
 

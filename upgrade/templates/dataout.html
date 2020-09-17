@@ -8,6 +8,7 @@
 <div class="container-fluid">
   <h2>Fabric Information of {{ fabric }} @{{ location }}</h2>
   <p>Below page capture the snapshot of the fabric, endpoint and more information </p>
+  <p>Time took to process: {{ totalTime }}  </p>
   <ul class="nav nav-tabs">
     <li class="active"><a data-toggle="pill" href="#home">Home</a></li>
     <li><a data-toggle="tab" href="#menu1">Fabric Information</a></li>
@@ -22,25 +23,24 @@
     <div id="menu1" class="tab-pane fade">
         <h1>Fabric Information</h1>
         <p>Location : {{ location }}</p>
-        <p>fabric : {{ fabric }}</p>
-        <p>controller  : {{ controller }}</p>
+        <p>Fabric : {{ fabric }}</p>
+        <p>Controller  : {{ controller }}</p>
+        <p>Total nodes : {{ node_information.totalCount }}</p>
         <br>
         <input class="form-control" id="searchfabricInput" type="text" placeholder="Search for Fabric information..">
         <br>
         <table id="fabricTable" class="display table table-striped table-condensed" width=100% >
             <thead>
-                <tr>
-                    <tr>
-                        <td>Node ID</td>
-                        <td>Name</td>
-                        <td>Role</td>
-                        <td>Fabric state</td>
-                        <td>Model</td>
-                        <td>Serial</td>
-                        <td>DN</td>
-                        <td>Firmware</td>
-                    </tr>
-                </tr>
+              <tr>
+                 <td>Node ID</td>
+                 <td>Name</td>
+                 <td>Role</td>
+                 <td>Fabric state</td>
+                 <td>Model</td>
+                 <td>Serial</td>
+                 <td>DN</td>
+                 <td>Firmware</td>
+             </tr>
             </thead>
             <tbody>
                 {% for node in node_information.imdata %}
@@ -76,7 +76,6 @@
                             <td>Encap Vlan</td>
                             <td>Routable IP</td>
                         </tr>
-                    </tr>
                 </thead>
                 <tbody>
                     {% for ep  in endpoint_info %}
