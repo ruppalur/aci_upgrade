@@ -266,6 +266,7 @@ class GatherFabricInfo:
         return [node_id,leaf_int_output.json(), node_opflex_output.json()]
 
 def final_construct(location, fabric):
+    start_function = time.perf_counter()
     cred_info = give_credentials(location, fabric)
     crazy_output = {'phys_info': [],
                     'opflex_info': [],
@@ -300,7 +301,7 @@ def final_construct(location, fabric):
     crazy_output['leaf_nodes_info'] = extract_leaf_nodes(crazy_output['fabric_node_info'])
     nodeinfo_stop = time.perf_counter()
     print(f"...done in {round(nodeinfo_stop - nodeinfo_start, 2)} sec(s)")
-    '''
+
     #Get the Physical interfaces of node
     with concurrent.futures.ThreadPoolExecutor() as executor:
         nodes = [node[0] for node in crazy_output['leaf_nodes_info']]
@@ -325,7 +326,7 @@ def final_construct(location, fabric):
         crazy_output['phys_info'].append([node_id,phy_node_output,opflex_node_output])
         node_capture_stop = time.perf_counter()
         print(f' in {round(node_capture_stop - node_capture_start, 2)} sec(s)')
-
+   '''
     #get Endpoint information
     print('Gathering the endpoint information of fabric',end = " ")
     get_endpoint_start = time.perf_counter()
@@ -342,12 +343,13 @@ def final_construct(location, fabric):
 
     # Merging both node and firmware output
     crazy_output['node_information'] = fabric_node_fw(crazy_output['fabric_node_info'], crazy_output['fabric_firmware_info'])
-
+    finish_function = time.perf_counter()
+    crazy_output['totalTime'] = round(finish_function - start_function, 2)
     return crazy_output
 
 if __name__ == '__main__':
     my_location = 'SVL'
     my_fabric = 'SVL-FAB7'
     final_construct_output = final_construct(my_location, my_fabric)
-    for foutput in final_construct_output['phys_info']:
-        print(foutput[1])
+    print(final_construct_output['totalTime'])
+
