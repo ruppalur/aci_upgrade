@@ -69,6 +69,9 @@
          </ul>
           <div class="tab-content">
             <div id="nodehome" class="tab-pane fade in active">
+                <br>
+                <div align="center">Summary of the Leafs ports </div>
+                <br>
                 <table class="display table table-striped table-condensed" width=100% >
                          <thead>
                            <tr>
@@ -77,6 +80,7 @@
                               <td>controller UP Ports</td>
                               <td>Spine UP Ports</td>
                               <td>SouthBound UP Neighbors</td>
+                               <td>Opflex - ODev</td>
                           </tr>
                          </thead>
                          <tbody>
@@ -87,6 +91,7 @@
                                  <td>{{ node[1].controller_up_int_count }}</td>
                                  <td>{{ node[1].spine_up_int_count }}</td>
                                  <td>{{ node[1].southbound_up_int_count }}</td>
+                                 <td>{{ node[2].totalCount }}</td>
                              </tr>
                              {% endfor %}
                          </tbody>

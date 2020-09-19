@@ -371,5 +371,5 @@ if __name__ == '__main__':
     #node_id = '1011'
     final_construct_output = final_construct(my_location, my_fabric)
     for out in final_construct_output['phys_info']:
-        print(out[1]['spine_interfaces'])
+        print(out[2])
 
