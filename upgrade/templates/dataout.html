@@ -13,6 +13,7 @@
     <li class="active"><a data-toggle="pill" href="#home">Home</a></li>
     <li><a data-toggle="tab" href="#menu1">Fabric Information</a></li>
     <li><a data-toggle="tab" href="#menu2">Endpoint Information</a></li>
+    <li><a data-toggle="tab" href="#menu3">Node Information</a></li>
   </ul>
   <div class="tab-content">
     <div id="home" class="tab-pane fade in active">
@@ -59,43 +60,86 @@
         </table>
     </div>
 
-    <div id="menu2" class="tab-pane fade">
-        <p>Total Ip Information: {{ endpoint_total }}</p>
-        <input class="form-control" id="searchInput" type="text" placeholder="Search for Endpoint..">
-        <br>
-        <table id="endpointtable" class="display table table-striped table-condensed" width=100% >
-                <thead>
-                    <tr>
-                        <tr>
-                            <td>Endpoint</td>
-                            <td>IP address</td>
-                            <td>MAC address</td>
-                            <td>Tenant</td>
-                            <td>EPG/VRF/L3out</td>
-                            <td>Hostname</td>
-                            <td>Encap Vlan</td>
-                            <td>Routable IP</td>
-                        </tr>
-                </thead>
-                <tbody>
-                    {% for ep  in endpoint_info %}
-                    <tr class = '{{ ep[8] }}'>
-                        <td>{{ ep[2] }}</td>
-                        <td>{{ ep[3] }}</td>
-                        <td>{{ ep[4] }}</td>
-                        <td>{{ ep[0] }}</td>
-                        <td>{{ ep[1] }}</td>
-                        <td>{{ ep[7] }}</td>
-                        <td>{{ ep[5] }}</td>
-                        <td>{{ ep[6] }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-        </table>
-
+    <div id="menu3" class="tab-pane fade">
+         <ul class="nav nav-tabs">
+           <li class="active"><a data-toggle="pill" href="#nodehome">Node Summary</a></li>
+           {% for node in phys_info %}
+             <li><a data-toggle="tab" href="#submenu{{node[0]}}">{{ node[0] }}</a></li>
+           {% endfor %}
+         </ul>
+          <div class="tab-content">
+            <div id="nodehome" class="tab-pane fade in active">
+                <table class="display table table-striped table-condensed" width=100% >
+                         <thead>
+                           <tr>
+                              <td>Node</td>
+                              <td>Total Ports</td>
+                              <td>controller UP Ports</td>
+                              <td>Spine UP Ports</td>
+                              <td>SouthBound UP Neighbors</td>
+                          </tr>
+                         </thead>
+                         <tbody>
+                             {% for node in phys_info %}
+                             <tr>
+                                 <td>{{ node[0] }}</td>
+                                 <td>{{ node[1].totalCount }}</td>
+                                 <td>{{ node[1].controller_up_int_count }}</td>
+                                 <td>{{ node[1].spine_up_int_count }}</td>
+                                 <td>{{ node[1].southbound_up_int_count }}</td>
+                             </tr>
+                             {% endfor %}
+                         </tbody>
+                     </table>
+            </div>
+            {% for node in phys_info %}
+                <div id="submenu{{node[0]}}" class="tab-pane fade">
+                    <p>Controller Interfaces of node: {{ node[0] }}</p>
+                     <table class="display table table-striped table-condensed" width=100% >
+                         <thead>
+                           <tr>
+                              <td>Int ID</td>
+                              <td>status</td>
+                              <td>dn</td>
+                              <td>cdp dn</td>
+                              <td>lldp dn</td>
+                          </tr>
+                         </thead>
+                         <tbody>
+                             {% for node_out in node[1]['controller_interfaces'] %}
+                             <tr class="{{ node_out[6] }}">
+                                 <td>{{ node_out[0] }}</td>
+                                 <td>{{ node_out[2] }}</td>
+                                 <td>{{ node_out[3] }}</td>
+                                 <td>{{ node_out[4] }}</td>
+                                 <td>{{ node_out[5] }}</td>
+                             </tr>
+                             {% endfor%}
+                             {% for node_out in node[1]['southbound_interfaces'] %}
+                             <tr class="{{ node_out[6] }}">
+                                 <td>{{ node_out[0] }}</td>
+                                 <td>{{ node_out[2] }}</td>
+                                 <td>{{ node_out[3] }}</td>
+                                 <td>{{ node_out[4] }}</td>
+                                 <td>{{ node_out[5] }}</td>
+                             </tr>
+                             {% endfor%}
+                             {% for node_out in node[1]['spine_interfaces'] %}
+                             <tr class="{{ node_out[6] }}">
+                                 <td>{{ node_out[0] }}</td>
+                                 <td>{{ node_out[2] }}</td>
+                                 <td>{{ node_out[3] }}</td>
+                                 <td>{{ node_out[4] }}</td>
+                                 <td>{{ node_out[5] }}</td>
+                             </tr>
+                             {% endfor%}
+                         </tbody>
+                     </table>
+                 </div>
+            {% endfor %}
+         </div>
+      </div>
     </div>
-
-  </div>
 </div>
 {% endblock %}
 {% block script  %}

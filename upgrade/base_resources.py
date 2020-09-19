@@ -83,8 +83,10 @@ def format_leaf_interface_output(l1PhysIf):
     :param l1PhysIf: output of the leaf_int_url
     :return: dict segregated
     """
-    output = {'spine_interfaces': [], 'southbound_interfaces': [], 'controller_interfaces': []}
+    output = {'spine_interfaces': [], 'southbound_interfaces': [], 'controller_interfaces': [], "spine_up_int_count": 0 ,
+              "southbound_up_int_count": 0, "controller_up_int_count":0}
     ints_count = int(l1PhysIf['totalCount'])
+    output['totalCount'] = ints_count
     for interface in range(ints_count):
         int_dn = l1PhysIf['imdata'][interface]['l1PhysIf']['attributes']['dn']
         int_id = l1PhysIf['imdata'][interface]['l1PhysIf']['attributes']['id']
@@ -102,6 +104,12 @@ def format_leaf_interface_output(l1PhysIf):
             element_class = 'info'
             output['southbound_interfaces'].append([int_id, int_type, status, int_dn, cdp_int_dn, lldp_int_dn,element_class])
         #print([int_id, int_type, status, int_dn, cdp_int_dn, lldp_int_dn,element_class])
+    #gather the up interfaces towards the spine
+    output["spine_up_int_count"] = [spine[2] for spine in output['spine_interfaces'] ].count('up')
+    # gather the up controller interfaces towards the spine
+    output["controller_up_int_count"] = [spine[2] for spine in output['controller_interfaces']].count('up')
+    # gather the up south_bound interfaces
+    output["southbound_up_int_count"] = [spine[2] for spine in output['southbound_interfaces']].count('up')
     return output
 
 def give_credentials(location, fabric):
@@ -269,17 +277,20 @@ class GatherFabricInfo:
         :param node_id:
         :return:list of oplex and physical information.
         """
+        node_output = [node_id]
         node_info_start = time.perf_counter()
         int_url = "/l1PhysIf.json?rsp-subtree=children&rsp-subtree-class=ethpmPhysIf"
         leaf_int_url = self.node_dn_url + node_id + int_url
         leaf_int_output = requests.get(leaf_int_url, cookies=self.cookiejar, verify=False)
+        node_output.append(leaf_int_output.json())
         opflexodev_url = 'node/class/opflexODev.json?query-target-filter=and(wcard(opflexODev.fabricPathDn,"{0}"))'. \
             format(node_id)
         opflex_baseurl = self.base_url + opflexodev_url
         node_opflex_output = requests.get(opflex_baseurl, cookies=self.cookiejar, verify=False)
         node_info_finish = time.perf_counter()
         print(f"Gathering Physical and Opflex information {node_id}...done in {round(node_info_finish-node_info_start, 2)} sec(s)")
-        return [node_id,leaf_int_output.json(), node_opflex_output.json()]
+        node_output.append(node_opflex_output.json())
+        return node_output
 
 def final_construct(location, fabric):
     start_function = time.perf_counter()
@@ -318,6 +329,7 @@ def final_construct(location, fabric):
     nodeinfo_stop = time.perf_counter()
     print(f"...done in {round(nodeinfo_stop - nodeinfo_start, 2)} sec(s)")
 
+
     #Get the Physical interfaces of node
     with concurrent.futures.ThreadPoolExecutor() as executor:
         nodes = [node[0] for node in crazy_output['leaf_nodes_info']]
@@ -325,9 +337,9 @@ def final_construct(location, fabric):
 
         for phy_result in results:
             phy_node_output = format_leaf_interface_output(phy_result[1])
-            crazy_output['phys_info'].append([phy_node_output])
+            crazy_output['phys_info'].append([phy_result[0], phy_node_output, phy_result[2]])
             #print(phy_result)
-
+    '''
     #get Endpoint information
     print('-'*60)
     print('Gathering the endpoint information of fabric',end = " ")
@@ -338,7 +350,10 @@ def final_construct(location, fabric):
     get_endpoint_stop = time.perf_counter()
     print(f'...done in {round(get_endpoint_stop - get_endpoint_start, 2)} sec(s)')
 
-
+    #test trigger to capture the node info
+    nodeouput = _instance.get_phy_opflex_info(node_id)
+    print(nodeouput)
+    '''
     #Trigger the logout function
     print('Gathered all the information of fabric..logging off',end = " ")
     _instance.apic_logout()
@@ -353,6 +368,8 @@ def final_construct(location, fabric):
 if __name__ == '__main__':
     my_location = 'SVL'
     my_fabric = 'SVL-FAB7'
+    #node_id = '1011'
     final_construct_output = final_construct(my_location, my_fabric)
-    print(final_construct_output['fabric_node_info'])
+    for out in final_construct_output['phys_info']:
+        print(out[1]['spine_interfaces'])
 
