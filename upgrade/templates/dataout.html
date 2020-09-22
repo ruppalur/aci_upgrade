@@ -9,62 +9,86 @@
   <h2>Fabric Information of {{ fabric }} @{{ location }}</h2>
   <p>Below page capture the snapshot of the fabric, endpoint and more information </p>
   <p>Time took to process: {{ totalTime }}  </p>
+    <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="status" id="radios1" value="All" checked>
+      <label class="form-check-label" for="radios1">
+        All ports
+      </label>
+    </div>
+    <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="status" id="radios2" value="up" checked>
+      <label class="form-check-label" for="radios2">
+        UP ports
+      </label>
+    </div>
+  <br>
   <ul class="nav nav-tabs">
-    <li class="active"><a data-toggle="pill" href="#home">Home</a></li>
-    <li><a data-toggle="tab" href="#menu1">Fabric Information</a></li>
-    <li><a data-toggle="tab" href="#menu2">Endpoint Information</a></li>
-    <li><a data-toggle="tab" href="#menu3">Node Information</a></li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="nav-link active pill" href="#home">Home</a>
+    </li>
+    <li class="nav-item" ><a class="nav-link" data-toggle="tab" href="#menu1">Fabric Information</a></li>
+    <li class="nav-item" ><a class="nav-link" data-toggle="tab" href="#menu2">Endpoint Information</a></li>
+    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#menu3">Node Information</a></li>
   </ul>
   <div class="tab-content">
     <div id="home" class="tab-pane fade in active">
       <h3>HOME</h3>
       <p>List of mo's captured as part of the change</p>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+          <label class="form-check-label" for="inlineRadio1">1</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+          <label class="form-check-label" for="inlineRadio2">2</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3" disabled>
+          <label class="form-check-label" for="inlineRadio3">3 (disabled)</label>
+        </div>
     </div>
 
-    <div id="menu1" class="tab-pane fade">
-        <h1>Fabric Information</h1>
-        <p>Location : {{ location }}</p>
-        <p>Fabric : {{ fabric }}</p>
-        <p>Controller  : {{ controller }}</p>
-        <p>Total nodes : {{ node_information.totalCount }}</p>
+    <div id="menu2" class="tab-pane fade">
+        <p>Total Ip Information: {{ endpoint_total }}</p>
+        <input class="form-control" id="searchInput" type="text" placeholder="Search for Endpoint..">
         <br>
-        <input class="form-control" id="searchfabricInput" type="text" placeholder="Search for Fabric information..">
-        <br>
-        <table id="fabricTable" class="display table table-striped table-condensed" width=100% >
-            <thead>
-              <tr>
-                 <td>Node ID</td>
-                 <td>Name</td>
-                 <td>Role</td>
-                 <td>Fabric state</td>
-                 <td>Model</td>
-                 <td>Serial</td>
-                 <td>DN</td>
-                 <td>Firmware</td>
-             </tr>
-            </thead>
-            <tbody>
-                {% for node in node_information.imdata %}
-                <tr class="{{ node.fabricNode.attributes.element_class }}">
-                    <td>{{ node.fabricNode.attributes.id }}</td>
-                    <td>{{ node.fabricNode.attributes.name }}</td>
-                    <td>{{ node.fabricNode.attributes.role }}</td>
-                    <td>{{ node.fabricNode.attributes.fabricSt }}</td>
-                    <td>{{ node.fabricNode.attributes.model }}</td>
-                    <td>{{ node.fabricNode.attributes.serial }}</td>
-                    <td>{{ node.fabricNode.attributes.dn }}</td>
-                    <td>{{ node.fabricNode.attributes.firmware }}</td>
-                </tr>
-                {% endfor%}
-            </tbody>
+        <table id="endpointtable" class="display table table-striped table-condensed" width=100% >
+                <thead>
+                    <tr>
+                        <tr>
+                            <td>Endpoint</td>
+                            <td>IP address</td>
+                            <td>MAC address</td>
+                            <td>Tenant</td>
+                            <td>EPG/VRF/L3out</td>
+                            <td>Hostname</td>
+                            <td>Encap Vlan</td>
+                            <td>Routable IP</td>
+                        </tr>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ep  in endpoint_info %}
+                    <tr class = '{{ ep[8] }}'>
+                        <td>{{ ep[2] }}</td>
+                        <td>{{ ep[3] }}</td>
+                        <td>{{ ep[4] }}</td>
+                        <td>{{ ep[0] }}</td>
+                        <td>{{ ep[1] }}</td>
+                        <td>{{ ep[7] }}</td>
+                        <td>{{ ep[5] }}</td>
+                        <td>{{ ep[6] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
         </table>
-    </div>
 
+    </div>
     <div id="menu3" class="tab-pane fade">
          <ul class="nav nav-tabs">
-           <li class="active"><a data-toggle="pill" href="#nodehome">Node Summary</a></li>
+           <li class="active"><a class="nav-link" data-toggle="pill" href="#nodehome">Node Summary</a></li>
            {% for node in phys_info %}
-             <li><a data-toggle="tab" href="#submenu{{node[0]}}">{{ node[0] }}</a></li>
+             <li><a class="nav-link" data-toggle="tab" href="#submenu{{node[0]}}">{{ node[0] }}</a></li>
            {% endfor %}
          </ul>
           <div class="tab-content">
@@ -121,7 +145,7 @@
                              </tr>
                              {% endfor%}
                              {% for node_out in node[1]['southbound_interfaces'] %}
-                             <tr class="{{ node_out[6] }}">
+                             <tr class="dataRow">
                                  <td>{{ node_out[0] }}</td>
                                  <td>{{ node_out[2] }}</td>
                                  <td>{{ node_out[3] }}</td>
@@ -148,9 +172,6 @@
 </div>
 {% endblock %}
 {% block script  %}
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script>
         $(document).ready(function(){
           $("#searchInput").on("keyup", function() {

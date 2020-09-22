@@ -339,7 +339,7 @@ def final_construct(location, fabric):
             phy_node_output = format_leaf_interface_output(phy_result[1])
             crazy_output['phys_info'].append([phy_result[0], phy_node_output, phy_result[2]])
             #print(phy_result)
-    '''
+
     #get Endpoint information
     print('-'*60)
     print('Gathering the endpoint information of fabric',end = " ")
@@ -350,24 +350,21 @@ def final_construct(location, fabric):
     get_endpoint_stop = time.perf_counter()
     print(f'...done in {round(get_endpoint_stop - get_endpoint_start, 2)} sec(s)')
 
-    #test trigger to capture the node info
-    nodeouput = _instance.get_phy_opflex_info(node_id)
-    print(nodeouput)
-    '''
     #Trigger the logout function
     print('Gathered all the information of fabric..logging off',end = " ")
     _instance.apic_logout()
-    print("...logged off")
+
 
     # Merging both node and firmware output
     crazy_output['node_information'] = fabric_node_fw(crazy_output['fabric_node_info'], crazy_output['fabric_firmware_info'])
     finish_function = time.perf_counter()
     crazy_output['totalTime'] = round(finish_function - start_function, 2)
+    print(f"...logged off..Total time to execute: { crazy_output['totalTime'] }")
     return crazy_output
 
 if __name__ == '__main__':
-    my_location = 'SVL'
-    my_fabric = 'SVL-FAB7'
+    my_location = 'RTP'
+    my_fabric = 'RTP1-FAB1'
     #node_id = '1011'
     final_construct_output = final_construct(my_location, my_fabric)
     for out in final_construct_output['phys_info']:

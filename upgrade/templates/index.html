@@ -4,16 +4,16 @@
 {% block title %} ACI {% endblock %}
 
 {% block content  %}
-
-<h1>Welcome to Home Page - Capture the Information of the ACI fabric</h1>
-
-
-<h2>Please select from the below fabric</h2>
-<form class="" method="post">
-    {{ form.csrf_token }}
-    {{ form.location }}
-    {{ form.fabric }}
-    {{ form.submit }}
-</form>
-
+        <nav class="navbar navbar-dark bg-primary">
+          <!-- Navbar content -->
+        </nav>
+        <div class="container">
+        <h2>select the fabric</h2><br>
+        <form class="" method="post">
+            {{ form.csrf_token }}
+            {{ form.location }}
+            {{ form.fabric }}
+            {{ form.submit }}
+        </form>
+        </div>
  {% endblock %}
